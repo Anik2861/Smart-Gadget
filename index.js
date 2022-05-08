@@ -20,9 +20,18 @@ async function run() {
     try {
         await client.connect();
         const ProductCollection = client.db("smartGadget").collection("products");
+        const ReviesCollection = client.db("reviewGadget").collection("review");
+        // ALL Products
         app.get('/products', async (req, res) => {
             const query = {}
             const cursor = ProductCollection.find(query);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+        // Reviews
+        app.get('/reviews', async (req, res) => {
+            const query = {}
+            const cursor = ReviesCollection.find(query);
             const result = await cursor.toArray()
             res.send(result)
         })
@@ -42,7 +51,7 @@ async function run() {
         app.delete('/products/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
-            const result = await ProductCollection.findOne(query)
+            const result = await ProductCollection.deleteOne(query)
             res.send(result)
         })
         // update item
