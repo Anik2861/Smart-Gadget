@@ -47,6 +47,16 @@ async function run() {
             const result = await ProductCollection.insertOne(newService)
             res.send(result)
         })
+        // find my item
+        app.get('/products', async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = { email: email }
+            const cursor = ProductCollection.find(query);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
         // delete item
         app.delete('/products/:id', async (req, res) => {
             const id = req.params.id
@@ -55,7 +65,7 @@ async function run() {
             res.send(result)
         })
         // update item
-        app.put('/products/:id', async (req, res) => {
+        app.put('/products/:productsId', async (req, res) => {
             const id = req.params.id;
             const updateUser = req.body;
             const filter = { _id: ObjectId(id) }
