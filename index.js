@@ -48,8 +48,9 @@ async function run() {
             res.send(result)
         })
         // find my item
-        app.get('/products', async (req, res) => {
+        app.get('/product', async (req, res) => {
             const email = req.query.email;
+            console.log(req)
             console.log(email)
             const query = { email: email }
             const cursor = ProductCollection.find(query);
