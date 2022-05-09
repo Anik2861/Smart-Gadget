@@ -27,23 +27,23 @@ app.use(express())
 
 
 
-function verifyJWT(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).send({ message: 'unauthorize access' })
-    }
-    const token = authHeader.split(' ')[1]
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(403).send({ message: 'Forbidden access' })
-        }
-        console.log('decoded', decoded);
-        req.decoded = decoded;
-        next();
-    });
-    // console.log('inside verifyingJWT', authHeader)
-    next();
-}
+// function verifyJWT(req, res, next) {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader) {
+//         return res.status(401).send({ message: 'unauthorize access' })
+//     }
+//     const token = authHeader.split(' ')[1]
+//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+//         if (err) {
+//             return res.status(403).send({ message: 'Forbidden access' })
+//         }
+//         console.log('decoded', decoded);
+//         req.decoded = decoded;
+//         next();
+//     });
+//     // console.log('inside verifyingJWT', authHeader)
+//     next();
+// }
 
 
 const uri = "mongodb+srv://smartGadget:RDSrZffkbFEDBiTZ@cluster0.41lov.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -92,18 +92,18 @@ async function run() {
             res.send(result)
         })
         // find my item
-        app.get('/product', verifyJWT, async (req, res) => {
+        app.get('/product',  async (req, res) => {
             const decodeEmail = req.decoded.email;
             const email = req.query.email;
-            if (email === decodeEmail) {
+            // if (email === decodeEmail) {
                 const query = { email: email }
                 const cursor = ProductCollection.find(query);
                 const result = await cursor.toArray()
                 res.send(result)
-            }
-            else {
-                res.send(403).send({ message: 'forbiden access' })
-            }
+            // }
+            // else {
+            //     res.send(403).send({ message: 'forbiden access' })
+            // }
         })
         // delete item
         app.delete('/products/:id', async (req, res) => {
