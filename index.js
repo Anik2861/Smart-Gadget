@@ -10,18 +10,18 @@ const app = express()
 
 
 // middlewhare
-app.use(cors())
-app.use(express())
+// app.use(cors())
+// app.use(express())
 
 // Middlewares---
-// const corsConfig = {
-//     origin: ['https://smart-gadget-warehouse.web.app/'],
-//     credentials: true,
-//     methods: ["GET", "POST", "DELETE","PUT"],
-// }
-// app.use(cors(corsConfig))
-// app.options('*', cors(corsConfig))
-// app.use(express.json())
+const corsConfig = {
+    origin: ['https://smart-gadget-warehouse.web.app/'],
+    credentials: true,
+    methods: ["GET", "POST", "DELETE","PUT"],
+}
+app.use(cors(corsConfig))
+app.options('*', cors(corsConfig))
+app.use(express.json())
 
 
 function verifyJWT(req, res, next) {
