@@ -14,15 +14,23 @@ const app = express();
 // app.use(express())
 
 // Middlewares---
+// const corsConfig = {
+//     origin: ['https://smart-gadget-warehouse.web.app/'],
+//     credentials: true,
+//     methods: ["GET", "POST", "DELETE","PUT"],
+// }
+// app.use(cors(corsConfig))
+// app.options('*', cors(corsConfig))
+// app.use(express.json())
+// Middlewares
 const corsConfig = {
-    origin: ['https://smart-gadget-warehouse.web.app/'],
+    origin: true,
     credentials: true,
-    methods: ["GET", "POST", "DELETE","PUT"],
-}
-app.use(cors(corsConfig))
-app.options('*', cors(corsConfig))
-app.use(express.json())
+  }
+  app.use(cors(corsConfig))
+  app.options('*', cors(corsConfig))
 
+  
 
 function verifyJWT(req, res, next) {
     const authHeader = req.headers.authorization;
