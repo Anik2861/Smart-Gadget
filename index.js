@@ -93,7 +93,7 @@ async function run() {
         })
         // find my item
         app.get('/product',  async (req, res) => {
-            const decodeEmail = req.decoded.email;
+            // const decodeEmail = req.decoded.email;
             const email = req.query.email;
             // if (email === decodeEmail) {
                 const query = { email: email }
