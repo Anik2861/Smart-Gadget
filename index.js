@@ -13,7 +13,7 @@ const app = express()
 app.use(cors())
 // app.use(express())
 
-// Middlewares
+// Middlewares---
 const corsConfig = {
     origin: ['https://smart-gadget-warehouse.web.app/'],
     credentials: true,
