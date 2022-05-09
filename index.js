@@ -1,21 +1,25 @@
 const express = require('express');
-const app = express()
+const cors = require('cors');
+
 var jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
-require('dotenv').config()
-const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+require('dotenv').config()
+const app = express()
+
 
 
 // middlewhare
-// app.use(cors())
+app.use(cors())
+// app.use(express())
+
 // Middlewares
 const corsConfig = {
     origin: true,
     credentials: true,
-  }
-  app.use(cors(corsConfig))
-  app.options('*', cors(corsConfig))
+}
+app.use(cors(corsConfig))
+app.options('*', cors(corsConfig))
 app.use(express.json())
 
 function verifyJWT(req, res, next) {
@@ -84,16 +88,16 @@ async function run() {
         })
         // find my item
         app.get('/product', verifyJWT, async (req, res) => {
-            const  decodeEmail=req.decoded.email;
+            const decodeEmail = req.decoded.email;
             const email = req.query.email;
-            if(email===decodeEmail){
+            if (email === decodeEmail) {
                 const query = { email: email }
-            const cursor = ProductCollection.find(query);
-            const result = await cursor.toArray()
-            res.send(result)
+                const cursor = ProductCollection.find(query);
+                const result = await cursor.toArray()
+                res.send(result)
             }
-            else{
-                res.send(403).send({message:'forbiden access'})
+            else {
+                res.send(403).send({ message: 'forbiden access' })
             }
         })
         // delete item
