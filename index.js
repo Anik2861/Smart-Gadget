@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 var jwt = require('jsonwebtoken');
-const port = process.env.PORT || 5500;
+const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
@@ -10,8 +10,8 @@ const app = express();
 
 
 // middlewhare
-// app.use(cors())
-// app.use(express())
+app.use(cors())
+app.use(express())
 
 // Middlewares---
 // const corsConfig = {
@@ -23,14 +23,9 @@ const app = express();
 // app.options('*', cors(corsConfig))
 // app.use(express.json())
 // Middlewares
-const corsConfig = {
-    origin: true,
-    credentials: true,
-  }
-  app.use(cors(corsConfig))
-  app.options('*', cors(corsConfig))
 
-  
+
+
 
 function verifyJWT(req, res, next) {
     const authHeader = req.headers.authorization;
