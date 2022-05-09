@@ -15,8 +15,9 @@ app.use(cors())
 
 // Middlewares
 const corsConfig = {
-    origin: true,
+    origin: ['https://smart-gadget-warehouse.web.app/'],
     credentials: true,
+    methods: ["GET", "POST", "DELETE","PUT"],
 }
 app.use(cors(corsConfig))
 app.options('*', cors(corsConfig))
@@ -138,3 +139,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log('smart gadget listening port', port)
 })
+
+
