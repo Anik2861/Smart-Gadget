@@ -27,17 +27,6 @@ app.use(express.json())
 // })
 
 
-// Middlewares---
-// const corsConfig = {
-//     origin: ['https://smart-gadget-warehouse.web.app/'],
-//     credentials: true,
-//     methods: ["GET", "POST", "DELETE","PUT"],
-// }
-// app.use(cors(corsConfig))
-// app.options('*', cors(corsConfig))
-// app.use(express.json())
-// Middlewares
-
 
 
 
