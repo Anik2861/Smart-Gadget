@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-var jwt = require('jsonwebtoken');
+// var jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
@@ -10,8 +10,22 @@ const app = express();
 
 
 // middlewhare
-app.use(cors())
+// app.use(cors())
 app.use(express())
+
+const corsConfig = {
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
+app.use(cors(corsConfig))
+app.options("*", cors(corsConfig))
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,authorization")
+    next()
+})
+
 
 // Middlewares---
 // const corsConfig = {
@@ -92,14 +106,14 @@ async function run() {
             res.send(result)
         })
         // find my item
-        app.get('/product',  async (req, res) => {
+        app.get('/product', async (req, res) => {
             // const decodeEmail = req.decoded.email;
             const email = req.query.email;
             // if (email === decodeEmail) {
-                const query = { email: email }
-                const cursor = ProductCollection.find(query);
-                const result = await cursor.toArray()
-                res.send(result)
+            const query = { email: email }
+            const cursor = ProductCollection.find(query);
+            const result = await cursor.toArray()
+            res.send(result)
             // }
             // else {
             //     res.send(403).send({ message: 'forbiden access' })
@@ -121,7 +135,7 @@ async function run() {
             const options = { upsert: true };
             const updateDoc = {
                 $set: {
-                    Quantity: updateUser.Quantity
+                    Quantity: updateUser?.Quantity
                 }
             }
             const result = await ProductCollection.updateOne(filter, updateDoc, options)
