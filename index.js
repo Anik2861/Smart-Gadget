@@ -7,10 +7,10 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 
-
-
 // middlewhare
-app.use(cors())
+app.use(cors({
+    origin:""
+}))
 app.use(express.json())
 
 // const corsConfig = {
