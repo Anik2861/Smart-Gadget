@@ -57,7 +57,7 @@ async function run() {
     try {
         await client.connect();
         const ProductCollection = client.db("smartGadget").collection("products");
-        const ReviesCollection = client.db("reviewGadget").collection("review");
+        const ReviesCollection = client.db("smartGadget").collection("reviews");
 
         // // Auth
         // app.post('/login', async (req, res) => {
@@ -83,7 +83,7 @@ async function run() {
             const result = await ProductCollection.findOne(query);
             res.send(result)
         })
-        
+
         // post database
         app.post('/products', async (req, res) => {
             const newService = req.body
