@@ -10,12 +10,13 @@ app.use(cors())
 app.use(express.json())
 
 
-const uri = "mongodb+srv://smartGadget:RDSrZffkbFEDBiTZ@cluster0.41lov.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.41lov.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
     try {
         await client.connect();
+
         const ProductCollection = client.db("smartGadget").collection("products");
         const ReviesCollection = client.db("smartGadget").collection("reviews");
 
@@ -83,7 +84,9 @@ async function run() {
         //     res.send(result)
         // })
 
-    } finally {
+    } 
+    
+    finally {
         // await client.close();
     }
 }
