@@ -1,53 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-
-// var jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 
 // middlewhare
-app.use(cors({
-    origin: "https://nameless-dusk-43671.herokuapp.com/ ",
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-}))
+app.use(cors())
 app.use(express.json())
-
-// const corsConfig = {
-//     origin: '*',
-//     credentials: true,
-//     methods: ['GET', 'POST', 'PUT', 'DELETE']
-// }
-// app.use(cors(corsConfig))
-// app.options("*", cors(corsConfig))
-// app.use(function (req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*")
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,authorization")
-//     next()
-// })
-
-
-
-
-
-// function verifyJWT(req, res, next) {
-//     const authHeader = req.headers.authorization;
-//     if (!authHeader) {
-//         return res.status(401).send({ message: 'unauthorize access' })
-//     }
-//     const token = authHeader.split(' ')[1]
-//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-//         if (err) {
-//             return res.status(403).send({ message: 'Forbidden access' })
-//         }
-//         console.log('decoded', decoded);
-//         req.decoded = decoded;
-//         next();
-//     });
-//     // console.log('inside verifyingJWT', authHeader)
-//     next();
-// }
 
 
 const uri = "mongodb+srv://smartGadget:RDSrZffkbFEDBiTZ@cluster0.41lov.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -58,16 +18,6 @@ async function run() {
         await client.connect();
         const ProductCollection = client.db("smartGadget").collection("products");
         const ReviesCollection = client.db("smartGadget").collection("reviews");
-
-        // // Auth
-        // app.post('/login', async (req, res) => {
-
-        //     const user = req.body;
-        //     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        //         expiresIn: '1d'
-        //     })
-        //     res.send({ accessToken })
-        // })
 
         // ALL Products
         app.get('/products', async (req, res) => {
@@ -110,34 +60,28 @@ async function run() {
 
         // find my item
         app.get('/product', async (req, res) => {
-            // const decodeEmail = req.decoded.email;
             const email = req.query.email;
-            // if (email === decodeEmail) {
             const query = { email: email }
             const cursor = ProductCollection.find(query);
             const result = await cursor.toArray()
             res.send(result)
-            // }
-            // else {
-            //     res.send(403).send({ message: 'forbiden access' })
-            // }
         })
-        
+
         // update item
-        app.put('/products/:id', async (req, res) => {
-            const id = req.params.id;
-            console.log(id)
-            const updateUser = req.body;
-            const filter = { _id: ObjectId(id) }
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: {
-                    Quantity: updateUser?.Quantity
-                }
-            }
-            const result = await ProductCollection.updateOne(filter, updateDoc, options)
-            res.send(result)
-        })
+        // app.put('/products/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     console.log(id)
+        //     const updateUser = req.body;
+        //     const filter = { _id: ObjectId(id) }
+        //     const options = { upsert: true };
+        //     const updateDoc = {
+        //         $set: {
+        //             Quantity: updateUser?.Quantity
+        //         }
+        //     }
+        //     const result = await ProductCollection.updateOne(filter, updateDoc, options)
+        //     res.send(result)
+        // })
 
     } finally {
         // await client.close();
