@@ -9,7 +9,8 @@ const app = express();
 
 // middlewhare
 app.use(cors({
-    origin:""
+    origin: "https://nameless-dusk-43671.herokuapp.com/ ",
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
 app.use(express.json())
 
@@ -58,15 +59,15 @@ async function run() {
         const ProductCollection = client.db("smartGadget").collection("products");
         const ReviesCollection = client.db("reviewGadget").collection("review");
 
-        // Auth
-        app.post('/login', async (req, res) => {
+        // // Auth
+        // app.post('/login', async (req, res) => {
 
-            const user = req.body;
-            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: '1d'
-            })
-            res.send({ accessToken })
-        })
+        //     const user = req.body;
+        //     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        //         expiresIn: '1d'
+        //     })
+        //     res.send({ accessToken })
+        // })
 
         // ALL Products
         app.get('/products', async (req, res) => {
@@ -75,6 +76,21 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+
+        app.get('/products/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await ProductCollection.findOne(query);
+            res.send(result)
+        })
+        
+        // post database
+        app.post('/products', async (req, res) => {
+            const newService = req.body
+            const result = await ProductCollection.insertOne(newService)
+            res.send(result)
+        })
+
         // Reviews
         app.get('/reviews', async (req, res) => {
             const query = {}
@@ -82,18 +98,16 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
-        app.get('/products/:id', async (req, res) => {
+
+        // delete item
+        app.delete('/products/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
-            const result = await ProductCollection.findOne(query);
+            const result = await ProductCollection.deleteOne(query)
             res.send(result)
         })
-        // post database
-        app.post('/products', async (req, res) => {
-            const newService = req.body
-            const result = await ProductCollection.insertOne(newService)
-            res.send(result)
-        })
+
+
         // find my item
         app.get('/product', async (req, res) => {
             // const decodeEmail = req.decoded.email;
@@ -108,13 +122,7 @@ async function run() {
             //     res.send(403).send({ message: 'forbiden access' })
             // }
         })
-        // delete item
-        app.delete('/products/:id', async (req, res) => {
-            const id = req.params.id
-            const query = { _id: ObjectId(id) }
-            const result = await ProductCollection.deleteOne(query)
-            res.send(result)
-        })
+        
         // update item
         app.put('/products/:id', async (req, res) => {
             const id = req.params.id;
